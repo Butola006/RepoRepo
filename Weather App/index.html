@@ -1,98 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700&display=swap"
-     rel="stylesheet" />
-    <!-- <link rel="stylesheet" href="styles.css"> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- INLINE CSS -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Merriweather Sans', sans-serif;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --colorDark1: #112D4E;
+      --colorDark2: #3F72AF;
+      --colorLight1: #DBE2EF;
+      --colorLight2: #F9F7F7;
+    }
+
+    html, body {
+      height: 100%;
+      background: linear-gradient(160deg, #112d4e 0%, #3f72af 100%);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow-x: hidden;
+    }
+
+    .wrapper {
+      width: 100%;
+      min-height: 100vh;
+      color: var(--colorLight2);
+    }
+
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+      padding-top: 20px;
+    }
+
+    .tab-container {
+      width: 90%;
+      max-width: 550px;
+      margin: 4rem auto 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .tab {
+      cursor: pointer;
+      font-size: 0.875rem;
+      letter-spacing: 1.75px;
+      padding: 5px 8px;
+    }
+
+    .current-tab {
+      background-color: rgba(219, 226, 239, 0.5);
+      border-radius: 4px;
+    }
+
+    .weather-container {
+      margin-block: 4rem;
+    }
+
+    .btn {
+      all: unset;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      border-radius: 5px;
+      background-color: var(--colorDark2);
+      cursor: pointer;
+      padding: 10px 30px;
+    }
+
+    .sub-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grant-location-container,
+    .loading-container,
+    .user-info-container,
+    .form-container,
+    .error-Msg {
+      width: 90%;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .grant-location-container.active,
+    .loading-container.active,
+    .user-info-container.active,
+    .form-container.active,
+    .error-Msg.active {
+      display: flex;
+    }
+
+    .grant-location-container p:first-of-type {
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .grant-location-container p:last-of-type {
+      font-size: 0.85rem;
+      margin: 0.75rem 0 1.75rem;
+    }
+
+    .name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .name p {
+      font-size: 2rem;
+    }
+
+    .user-info-container img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .user-info-container p[data-temp] {
+      font-size: 2.75rem;
+      font-weight: 700;
+    }
+
+    .parameter-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 2rem;
+    }
+
+    .parameter {
+      background-color: rgba(219, 226, 239, 0.5);
+      padding: 1rem;
+      border-radius: 5px;
+      width: 150px;
+      text-align: center;
+    }
+
+    .parameter img {
+      width: 50px;
+    }
+
+    .form-container {
+      max-width: 550px;
+      gap: 10px;
+      margin-bottom: 3rem;
+    }
+
+    .form-container input {
+      all: unset;
+      background-color: rgba(219, 226, 239, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      width: calc(100% - 60px);
+    }
+  </style>
 </head>
+
 <body>
-    <div class="wrapper">
-       <!-- heading -->
-        <h1>Weather App</h1>
+  <div class="wrapper">
+    <h1>Weather App</h1>
 
-        <!-- tab container -->
-         <div class="tab-container">
-            <p class="tab" data-userWeather="">Your Weather</p>
-            <p class="tab" data-searchWeather>Search Weather</p>
-         </div>
-
-        <!-- weather container -->
-         <div class="weather-container">
-           <!-- grant location access -->
-            <div class=" sub-container grant-location-container">
-                <img src="./assets/location.png" width="80" height="80" loading="lazy">
-                <p>Grant Location access</p>
-                <p>Allow access to get weather information</p>
-                <button class="btn" data-grantAccess>Grant Access</button>
-            </div>
-
-            <!-- search weather -->
-             <form class="form-container" data-searchForm>
-                <input placeholder="Search for City..." data-searchInput>
-                <button class="btn" type="submit">
-                    <img src="./assets/search.png" height="20" width="20" loading="lazy">
-                </button>
-             </form>
-
-             <!-- loading screen container -->
-              <div class="sub-container loading-container">
-                <img src="./assets/loading.gif" width="150" height="150">
-                <p>Loading</p>
-              </div>
-              
-              <!-- Error image -->
-              <div class="sub-container error-Msg">
-               <img src="./assets/not-found.png" height="300px" width="300px">
-               <p>Location not found</p>
-              </div>
-
-              <!-- show weather info -->
-            <div class="sub-container user-info-container">
-
-                <!-- city name and flag -->
-                <div class="name">
-                    <p data-cityName></p>
-                    <img data-countryIcon>
-                </div>
-              <!-- weather description -->
-              <p data-weatherDesc></p>
-              <img data-weatherIcon>
-
-              <!-- temperature -->
-              <p data-temp></p>
-
-             <!-- 3 cards-parameters -->
-              <div class="parameter-container">
-
-                <!-- card 1 -->
-                <div class="parameter">
-                    <img src="./assets/wind.png" alt="">
-                    <p>Windspeed</p>
-                    <p data-windspeed></p>
-                </div>
-
-                <!-- card2 -->
-                 <div class="parameter">
-                    <img src="./assets/humidity.png" alt="">
-                    <p>Humidity</p>
-                    <p data-humidity></p>
-                 </div>
-                 
-                <!-- card3 -->
-                 <div class="parameter">
-                    <img src="./assets/cloud.png" alt="">
-                    <p>Clouds</p>
-                    <p data-cloudiness></p>
-                 </div>
-
-              </div>
-            </div>
-         </div>
+    <div class="tab-container">
+      <p class="tab" data-userWeather>Your Weather</p>
+      <p class="tab" data-searchWeather>Search Weather</p>
     </div>
-   <!-- <script src="script.js"></script> -->
-</body>
 
+    <div class="weather-container">
+      <div class="sub-container grant-location-container">
+        <img src="./assets/location.png" width="80" />
+        <p>Grant Location Access</p>
+        <p>Allow access to get weather information</p>
+        <button class="btn" data-grantAccess>Grant Access</button>
+      </div>
+
+      <form class="form-container">
+        <input placeholder="Search for City..." data-searchInput />
+        <button class="btn" type="submit">🔍</button>
+      </form>
+
+      <div class="sub-container loading-container">
+        <img src="./assets/loading.gif" width="150" />
+        <p>Loading...</p>
+      </div>
+
+      <div class="sub-container error-Msg">
+        <img src="./assets/not-found.png" width="300" />
+        <p>Location not found</p>
+      </div>
+
+      <div class="sub-container user-info-container">
+        <div class="name">
+          <p data-cityName></p>
+          <img data-countryIcon />
+        </div>
+        <p data-weatherDesc></p>
+        <img data-weatherIcon />
+        <p data-temp></p>
+
+        <div class="parameter-container">
+          <div class="parameter">
+            <img src="./assets/wind.png" />
+            <p>Wind</p>
+            <p data-windspeed></p>
+          </div>
+          <div class="parameter">
+            <img src="./assets/humidity.png" />
+            <p>Humidity</p>
+            <p data-humidity></p>
+          </div>
+          <div class="parameter">
+            <img src="./assets/cloud.png" />
+            <p>Clouds</p>
+            <p data-cloudiness></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INLINE JS -->
+  <script>
+    const userTab = document.querySelector("[data-userWeather]");
+    const searchTab = document.querySelector("[data-searchWeather]");
+    const grantAccessContainer = document.querySelector(".grant-location-container");
+    const searchForm = document.querySelector(".form-container");
+    const loadingScreen = document.querySelector(".loading-container");
+    const userInfoContainer = document.querySelector(".user-info-container");
+    const errorMsgContainer = document.querySelector(".error-Msg");
+
+    let currentTab = userTab;
+    const API_KEY = "16666f98061207752672ca1686182eca";
+
+    currentTab.classList.add("current-tab");
+    grantAccessContainer.classList.add("active");
+
+    function switchTab(clickedTab) {
+      if (clickedTab !== currentTab) {
+        currentTab.classList.remove("current-tab");
+        currentTab = clickedTab;
+        currentTab.classList.add("current-tab");
+
+        if (clickedTab === searchTab) {
+          grantAccessContainer.classList.remove("active");
+          userInfoContainer.classList.remove("active");
+          searchForm.classList.add("active");
+        } else {
+          searchForm.classList.remove("active");
+          getFromSession();
+        }
+      }
+    }
+
+    userTab.addEventListener("click", () => switchTab(userTab));
+    searchTab.addEventListener("click", () => switchTab(searchTab));
+
+    function getFromSession() {
+      const coords = sessionStorage.getItem("user-coordinates");
+      if (!coords) {
+        grantAccessContainer.classList.add("active");
+      } else {
+        fetchWeather(JSON.parse(coords));
+      }
+    }
+
+    function fetchWeather({ lat, lon }) {
+      loadingScreen.classList.add("active");
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+      )
+        .then(res => res.json())
+        .then(data => {
+          loadingScreen.classList.remove("active");
+          userInfoContainer.classList.add("active");
+          render(data);
+        });
+    }
+
+    function render(data) {
+      document.querySelector("[data-cityName]").innerText = data.name;
+      document.querySelector("[data-weatherDesc]").innerText = data.weather[0].description;
+      document.querySelector("[data-temp]").innerText = data.main.temp + " °C";
+      document.querySelector("[data-windspeed]").innerText = data.wind.speed + " m/s";
+      document.querySelector("[data-humidity]").innerText = data.main.humidity + " %";
+      document.querySelector("[data-cloudiness]").innerText = data.clouds.all + " %";
+      document.querySelector("[data-weatherIcon]").src =
+        `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+      document.querySelector("[data-countryIcon]").src =
+        `https://flagcdn.com/144x108/${data.sys.country.toLowerCase()}.png`;
+    }
+
+    document
+      .querySelector("[data-grantAccess]")
+      .addEventListener("click", () => {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const coords = {
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude
+          };
+          sessionStorage.setItem("user-coordinates", JSON.stringify(coords));
+          fetchWeather(coords);
+        });
+      });
+
+    searchForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const city = document.querySelector("[data-searchInput]").value;
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+      )
+        .then(res => res.json())
+        .then(data => {
+          if (data.cod === "404") {
+            errorMsgContainer.classList.add("active");
+          } else {
+            render(data);
+            userInfoContainer.classList.add("active");
+          }
+        });
+    });
+  </script>
+</body>
 </html>
