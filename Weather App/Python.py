@@ -1,10 +1,10 @@
- import streamlit as st
+import streamlit as st
 from pathlib import Path
 
-st.set_page_config(layout="wide")
+html_file = Path(__file__).parent / "index.html"
 
-# Read HTML file
-html_file = Path("index.html").read_text(encoding="utf-8")
-
-# Display HTML
-st.components.v1.html(html_file, height=800, scrolling=True)
+st.components.v1.html(
+    html_file.read_text(encoding="utf-8"),
+    height=800,
+    scrolling=True
+)
